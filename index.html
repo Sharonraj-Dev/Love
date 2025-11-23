@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For My Dearest Sneha</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -12,15 +13,24 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #ff8e8e;
+            --accent-color: #d46a6a;
+            --text-color: #5a3e36;
+            --light-bg: #fff9f9;
+            --gradient: linear-gradient(135deg, #f9d1d1, #ffb6c1);
+        }
+
         body {
             font-family: 'Playfair Display', serif;
-            background: linear-gradient(135deg, #f9d1d1, #ffb6c1);
+            background: var(--gradient);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow-x: hidden;
-            color: #5a3e36;
+            color: var(--text-color);
             padding: 20px;
         }
 
@@ -34,20 +44,27 @@
             align-items: center;
         }
 
+        /* Envelope with enhanced animation */
+        .envelope-wrapper {
+            perspective: 1000px;
+            z-index: 2;
+        }
+
         .envelope {
             position: relative;
             width: 300px;
             height: 200px;
-            background: #ff6b6b;
+            background: var(--primary-color);
             border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             cursor: pointer;
             transition: transform 0.5s ease;
+            transform-style: preserve-3d;
             z-index: 2;
         }
 
         .envelope:hover {
-            transform: scale(1.05);
+            transform: translateY(-10px) rotateX(5deg);
         }
 
         .envelope:before {
@@ -57,7 +74,14 @@
             left: 0;
             border-left: 150px solid transparent;
             border-right: 150px solid transparent;
-            border-bottom: 100px solid #ff8e8e;
+            border-bottom: 100px solid var(--secondary-color);
+            transform-origin: top;
+            transition: transform 0.5s ease;
+        }
+
+        .envelope.open:before {
+            transform: rotateX(180deg);
+            z-index: 0;
         }
 
         .envelope:after {
@@ -67,7 +91,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #ff8e8e;
+            background: var(--secondary-color);
             border-radius: 8px;
             z-index: -1;
         }
@@ -76,7 +100,7 @@
             position: absolute;
             width: 280px;
             height: 180px;
-            background: #fff9f9;
+            background: var(--light-bg);
             top: 10px;
             left: 10px;
             border-radius: 4px;
@@ -89,11 +113,17 @@
             text-align: center;
             transition: all 0.5s ease;
             z-index: 1;
+            transform: translateY(0);
+        }
+
+        .letter.open {
+            transform: translateY(-150px);
+            z-index: 4;
         }
 
         .letter h2 {
             font-family: 'Dancing Script', cursive;
-            color: #d46a6a;
+            color: var(--accent-color);
             margin-bottom: 10px;
             font-size: 24px;
         }
@@ -112,8 +142,25 @@
             font-size: 40px;
             opacity: 0.8;
             z-index: 3;
+            transition: all 0.5s ease;
+            animation: heartbeat 2s infinite;
         }
 
+        .envelope.open .heart {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0);
+        }
+
+        @keyframes heartbeat {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            5% { transform: translate(-50%, -50%) scale(1.1); }
+            10% { transform: translate(-50%, -50%) scale(1); }
+            15% { transform: translate(-50%, -50%) scale(1.1); }
+            20% { transform: translate(-50%, -50%) scale(1); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* Full letter with elegant design */
         .full-letter {
             position: fixed;
             top: 0;
@@ -141,10 +188,17 @@
             background: #fff;
             padding: 40px;
             border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
             position: relative;
             border: 1px solid #ffd1dc;
-            margin: 20px 0;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.8s ease;
+        }
+
+        .full-letter.active .letter-content {
+            transform: translateY(0);
+            opacity: 1;
         }
 
         .letter-content:before {
@@ -154,20 +208,32 @@
             left: 0;
             width: 100%;
             height: 10px;
-            background: linear-gradient(to right, #ff6b6b, #ff8e8e, #ff6b6b);
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color), var(--primary-color));
             border-radius: 10px 10px 0 0;
+        }
+
+        .letter-content:after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            right: 20px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(212, 106, 106, 0.3), transparent);
         }
 
         .letter-header {
             text-align: center;
             margin-bottom: 30px;
+            position: relative;
         }
 
         .letter-header h1 {
             font-family: 'Dancing Script', cursive;
-            color: #d46a6a;
+            color: var(--accent-color);
             font-size: 42px;
             margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .letter-header h2 {
@@ -177,6 +243,17 @@
             font-weight: 400;
         }
 
+        .letter-header:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--accent-color), transparent);
+        }
+
         .letter-body {
             line-height: 1.8;
             font-size: 16px;
@@ -184,29 +261,83 @@
             text-align: justify;
         }
 
+        .letter-body p {
+            margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease;
+        }
+
+        .full-letter.active .letter-body p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .full-letter.active .letter-body p:nth-child(1) { transition-delay: 0.2s; }
+        .full-letter.active .letter-body p:nth-child(2) { transition-delay: 0.4s; }
+        .full-letter.active .letter-body p:nth-child(3) { transition-delay: 0.6s; }
+        .full-letter.active .letter-body p:nth-child(4) { transition-delay: 0.8s; }
+        .full-letter.active .letter-body p:nth-child(5) { transition-delay: 1s; }
+
         .quote {
             font-style: italic;
             text-align: center;
             margin: 30px 0;
             padding: 20px;
-            background: #fff9f9;
-            border-left: 4px solid #ff8e8e;
+            background: var(--light-bg);
+            border-left: 4px solid var(--secondary-color);
             font-size: 18px;
+            position: relative;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.5s ease;
+        }
+
+        .full-letter.active .quote {
+            opacity: 1;
+            transform: translateX(0);
+            transition-delay: 1.2s;
+        }
+
+        .quote:before, .quote:after {
+            content: '"';
+            font-size: 24px;
+            color: var(--accent-color);
+            position: absolute;
+        }
+
+        .quote:before {
+            top: 5px;
+            left: 10px;
+        }
+
+        .quote:after {
+            bottom: 5px;
+            right: 10px;
         }
 
         .signature {
             text-align: right;
             font-family: 'Dancing Script', cursive;
             font-size: 24px;
-            color: #d46a6a;
+            color: var(--accent-color);
             margin-top: 30px;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.5s ease;
+        }
+
+        .full-letter.active .signature {
+            opacity: 1;
+            transform: translateX(0);
+            transition-delay: 1.4s;
         }
 
         .close-btn {
             position: absolute;
             top: 20px;
             right: 20px;
-            background: #ff6b6b;
+            background: var(--primary-color);
             color: white;
             border: none;
             width: 40px;
@@ -219,13 +350,15 @@
             align-items: center;
             transition: all 0.3s ease;
             z-index: 11;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
         }
 
         .close-btn:hover {
-            background: #d46a6a;
-            transform: rotate(90deg);
+            background: var(--accent-color);
+            transform: rotate(90deg) scale(1.1);
         }
 
+        /* Enhanced floating hearts */
         .floating-hearts {
             position: fixed;
             top: 0;
@@ -238,7 +371,7 @@
 
         .floating-heart {
             position: absolute;
-            color: #ff6b6b;
+            color: var(--primary-color);
             font-size: 20px;
             opacity: 0;
             animation: float 6s ease-in infinite;
@@ -261,12 +394,80 @@
             }
         }
 
+        /* Background decoration */
+        .bg-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-heart {
+            position: absolute;
+            opacity: 0.03;
+            color: var(--accent-color);
+            font-size: 120px;
+            animation: drift 30s linear infinite;
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            100% {
+                transform: translate(100px, 100px) rotate(360deg);
+            }
+        }
+
+        /* Music player */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 5;
+            backdrop-filter: blur(5px);
+        }
+
+        .music-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .music-btn:hover {
+            background: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .music-text {
+            margin-left: 10px;
+            font-size: 14px;
+            color: var(--text-color);
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
 
-        /* Mobile-first responsive design */
+        /* Responsive design */
         @media (max-width: 768px) {
             .envelope {
                 width: 250px;
@@ -277,7 +478,7 @@
                 top: -85px;
                 border-left: 125px solid transparent;
                 border-right: 125px solid transparent;
-                border-bottom: 85px solid #ff8e8e;
+                border-bottom: 85px solid var(--secondary-color);
             }
             
             .letter {
@@ -335,6 +536,21 @@
                 height: 35px;
                 font-size: 18px;
             }
+            
+            .music-player {
+                bottom: 10px;
+                right: 10px;
+                padding: 8px 12px;
+            }
+            
+            .music-btn {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .music-text {
+                font-size: 12px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -347,7 +563,7 @@
                 top: -75px;
                 border-left: 110px solid transparent;
                 border-right: 110px solid transparent;
-                border-bottom: 75px solid #ff8e8e;
+                border-bottom: 75px solid var(--secondary-color);
             }
             
             .letter {
@@ -394,7 +610,6 @@
             }
         }
         
-        /* For very small screens */
         @media (max-width: 320px) {
             .envelope {
                 width: 200px;
@@ -405,7 +620,7 @@
                 top: -70px;
                 border-left: 100px solid transparent;
                 border-right: 100px solid transparent;
-                border-bottom: 70px solid #ff8e8e;
+                border-bottom: 70px solid var(--secondary-color);
             }
             
             .letter {
@@ -418,7 +633,6 @@
             }
         }
         
-        /* For landscape orientation on mobile */
         @media (max-height: 500px) and (orientation: landscape) {
             .container {
                 min-height: 150vh;
@@ -437,13 +651,16 @@
 <body>
     <div class="container">
         <div class="floating-hearts" id="hearts-container"></div>
+        <div class="bg-decoration" id="bgDecoration"></div>
         
-        <div class="envelope" id="envelope">
-            <div class="letter">
-                <h2>For My Sneha</h2>
-                <p>Click to open my heart...</p>
+        <div class="envelope-wrapper">
+            <div class="envelope" id="envelope">
+                <div class="letter" id="letter">
+                    <h2>For My Sneha</h2>
+                    <p>Click to open my heart...</p>
+                </div>
+                <div class="heart">❤️</div>
             </div>
-            <div class="heart">❤️</div>
         </div>
         
         <div class="full-letter" id="fullLetter">
@@ -477,24 +694,81 @@
                 </div>
             </div>
         </div>
+        
+        <div class="music-player">
+            <button class="music-btn" id="musicBtn">
+                <i class="fas fa-music"></i>
+            </button>
+            <div class="music-text">Play Music</div>
+        </div>
     </div>
 
+    <audio id="backgroundMusic" loop>
+        <source src="https://assets.codepen.io/1468070/romantic-piano.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
-        // Open the letter
-        document.getElementById('envelope').addEventListener('click', function() {
-            document.getElementById('fullLetter').classList.add('active');
+        // DOM elements
+        const envelope = document.getElementById('envelope');
+        const letter = document.getElementById('letter');
+        const fullLetter = document.getElementById('fullLetter');
+        const closeBtn = document.getElementById('closeBtn');
+        const musicBtn = document.getElementById('musicBtn');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        const musicText = document.querySelector('.music-text');
+        
+        // Open the letter with animation
+        envelope.addEventListener('click', function() {
+            // Add open class for envelope animation
+            envelope.classList.add('open');
+            letter.classList.add('open');
+            
+            // Show full letter after envelope animation
+            setTimeout(() => {
+                fullLetter.classList.add('active');
+            }, 800);
         });
         
         // Close the letter
-        document.getElementById('closeBtn').addEventListener('click', function() {
-            document.getElementById('fullLetter').classList.remove('active');
+        closeBtn.addEventListener('click', function() {
+            fullLetter.classList.remove('active');
+            
+            // Reset envelope after closing
+            setTimeout(() => {
+                envelope.classList.remove('open');
+                letter.classList.remove('open');
+            }, 500);
         });
         
         // Close the letter when clicking outside the content
-        document.getElementById('fullLetter').addEventListener('click', function(e) {
+        fullLetter.addEventListener('click', function(e) {
             if (e.target === this) {
-                document.getElementById('fullLetter').classList.remove('active');
+                fullLetter.classList.remove('active');
+                
+                // Reset envelope after closing
+                setTimeout(() => {
+                    envelope.classList.remove('open');
+                    letter.classList.remove('open');
+                }, 500);
             }
+        });
+        
+        // Music toggle
+        let isPlaying = false;
+        musicBtn.addEventListener('click', function() {
+            if (isPlaying) {
+                backgroundMusic.pause();
+                musicText.textContent = 'Play Music';
+                musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+            } else {
+                backgroundMusic.play().catch(e => {
+                    console.log("Audio play failed:", e);
+                    musicText.textContent = 'Click to play';
+                });
+                musicText.textContent = 'Playing...';
+                musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+            isPlaying = !isPlaying;
         });
         
         // Create floating hearts
@@ -520,9 +794,38 @@
             }
         }
         
+        // Create background decoration
+        function createBgDecoration() {
+            const bgDecoration = document.getElementById('bgDecoration');
+            const heartCount = 8;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('bg-heart');
+                heart.innerHTML = '❤️';
+                
+                // Random position and animation
+                const top = Math.random() * 100;
+                const left = Math.random() * 100;
+                const delay = Math.random() * 20;
+                const duration = 25 + Math.random() * 20;
+                
+                heart.style.top = `${top}vh`;
+                heart.style.left = `${left}vw`;
+                heart.style.animationDelay = `${delay}s`;
+                heart.style.animationDuration = `${duration}s`;
+                
+                bgDecoration.appendChild(heart);
+            }
+        }
+        
         // Initialize the page
         window.addEventListener('load', function() {
             createHearts();
+            createBgDecoration();
+            
+            // Preload audio
+            backgroundMusic.load();
         });
     </script>
 </body>
