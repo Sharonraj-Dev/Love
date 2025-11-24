@@ -12,27 +12,8 @@
     ],
     "routes": [
         {
-            "src": "/(.*\\.(html|css|js|json|png|jpg|jpeg|gif|ico|svg|txt|mp3|ogg|wav))",
-            "dest": "/$1"
-        },
-        {
             "src": "/(.*)",
-            "dest": "/index.html"
-        }
-    ],
-    "headers": [
-        {
-            "src": "/song\\.mp3",
-            "headers": [
-                {
-                    "key": "Content-Type",
-                    "value": "audio/mpeg"
-                },
-                {
-                    "key": "Cache-Control",
-                    "value": "public, max-age=86400"
-                }
-            ]
+            "dest": "/$1"
         }
     ]
 }
